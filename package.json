@@ -18,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/JohanCuello/calendar/issues"
   },
-  "homepage": "https://github.com/JohanCuello/calendar#readme"
+  "homepage": "https://github.com/JohanCuello/calendar#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-sourcemaps": "^2.6.4"
+  }
 }
