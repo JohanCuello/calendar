@@ -1,0 +1,21 @@
+{
+  "name": "calendar",
+  "description": "Calendar exercise",
+  "main": "index.html",
+  "authors": [
+    "Johan Cuello"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "calendar"
+  ],
+  "homepage": "https://github.com/JohanCuello/calendar",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
