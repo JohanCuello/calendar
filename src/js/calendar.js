@@ -53,10 +53,11 @@
 
             monthContainer.append(getMonthHeader(months[month], year));
 
-            var d = day
             var weekContainer = $("<div class='cal-w'></div>");
             weekContainer.append(getInvalidDaysElements(cDayOfWeek));
             monthContainer.append(weekContainer);
+            var now = new Date();
+
             do {
                 cDayOfWeek = date.getDay();
                 isWeekend = (cDayOfWeek == 0 || cDayOfWeek == 6);
@@ -65,19 +66,31 @@
                     weekContainer = $("<div class='cal-w'></div>");
                     monthContainer.append(weekContainer);
                 }
-                weekContainer.append(getDayElement(d, isWeekend));
-                d++;
+
+                var isCurrentDate = date.getFullYear() === now.getFullYear() &&
+                    date.getMonth() === now.getMonth() &&
+                    date.getDate() === now.getDate();
+
+                weekContainer.append(getDayElement(day, isWeekend, isCurrentDate));
+                day++;
                 acum++;
                 date = addDays(date, 1);
-            } while (d <= daysInMonth && acum < settings.numDays);
+            } while (day <= daysInMonth && acum < settings.numDays);
             var invalidDays = invalidDays = Math.abs(date.getDay() - 7);
             if (cDayOfWeek != 6)
                 weekContainer.append(getInvalidDaysElements(invalidDays));
             return monthContainer;
         }
 
-        function getDayElement(date, isWeekend) {
-            var style = isWeekend ? "cal-d cal-we" : "cal-d"
+        function getDayElement(date, isWeekend, isCurrentDate) {
+            var style = "cal-d";
+            if (isCurrentDate) {
+                style += " cal-cd";
+            } else {
+                if (isWeekend) {
+                    style += " cal-we";
+                }
+            }
             return "<div class='" + style + "'>" + date + "</div>";
         }
 

@@ -1,6 +1,10 @@
-$day-color:green;
+$default-day:green;
 $invalid-day:gray;
 $weekend-day:yellow;
+$current-day:white;
+
+/*style for calendar*/
+
 .cal {
     margin: 0;
     padding: 0;
@@ -10,9 +14,18 @@ $weekend-day:yellow;
     width: 400px;
 }
 
+
+/*style for month*/
+
 .cal-m {}
 
+
+/*style for week*/
+
 .cal-w {}
+
+
+/* style for days*/
 
 .cal-d {
     text-align: center;
@@ -20,21 +33,40 @@ $weekend-day:yellow;
     height: 100%;
     width: 14.28%;
     display: inline-block;
-    background-color: $day-color;
+    background-color: $default-day;
 }
+
+
+/*Style for current date*/
+
+.cal-cd {
+    background-color: $current-day;
+}
+
+
+/*Style for weekend*/
 
 .cal-we {
     background-color: $weekend-day;
 }
+
+
+/*Style for invalid date*/
 
 .cal-invalid {
     background-color: $invalid-day;
     color: black;
 }
 
+
+/*Style for month header*/
+
 .cal-m-header {
     text-align: center;
 }
+
+
+/*Style for week header*/
 
 .cal-w-header {
     margin: 0;
@@ -43,6 +75,9 @@ $weekend-day:yellow;
     outline: 0;
     width: 100%;
 }
+
+
+/*Style for day header*/
 
 .cal-d-header {
     margin: 0;
