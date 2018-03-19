@@ -1,0 +1,55 @@
+$day-color:green;
+$invalid-day:gray;
+$weekend-day:yellow;
+.cal {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: 0;
+    display: inline-block;
+    width: 400px;
+}
+
+.cal-m {}
+
+.cal-w {}
+
+.cal-d {
+    text-align: center;
+    vertical-align: middle;
+    height: 100%;
+    width: 14.28%;
+    display: inline-block;
+    background-color: $day-color;
+}
+
+.cal-we {
+    background-color: $weekend-day;
+}
+
+.cal-invalid {
+    background-color: $invalid-day;
+    color: black;
+}
+
+.cal-m-header {
+    text-align: center;
+}
+
+.cal-w-header {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: 0;
+    width: 100%;
+}
+
+.cal-d-header {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: 0;
+    display: inline-block;
+    min-width: 14.28%;
+    text-align: center;
+}

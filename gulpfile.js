@@ -1,6 +1,8 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
+var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
+var minifyCSS = require('gulp-csso');
 
 gulp.task('copy-jquery', function() {
     return gulp.src('bower_components/jquery/dist/jquery.min.js')
@@ -15,4 +17,11 @@ gulp.task('copy-calendar-js', function() {
         .pipe(gulp.dest('dist/js'));
 });
 
-gulp.task('default', ['copy-jquery', 'copy-calendar-js']);
+gulp.task('copy-calendar-css', function() {
+    return gulp.src('src/scss/calendar.scss')
+        .pipe(sass())
+        .pipe(minifyCSS())
+        .pipe(gulp.dest('dist/css'));
+});
+
+gulp.task('default', ['copy-jquery', 'copy-calendar-js', 'copy-calendar-css']);

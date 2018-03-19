@@ -15,62 +15,65 @@
             "July", "August", "September",
             "October", "November", "December"
         ];
+        var acum = 0;
 
         function render(container) {
             var calendarContainer = $("<div class='cal'></div>");
-            var monthContainer = null;
-            var weekContainer = null;
-
             var cDate = settings.startDate;
+            var cDay = cDate.getDate();
             var cMonth = cDate.getMonth();
-            var isRenderMonth = true;
+            var cYear = cDate.getFullYear();
             var counter = 0;
-
+            var monthNumber = getMonthDiff(settings.startDate, settings.endDate);
             calendarContainer.append(getWeekHeader());
 
             do {
+                calendarContainer.append(getMonthElement(cYear, cMonth, cDay));
 
-                if (isRenderMonth) {
-                    isRenderMonth = false;
-
-                    //render month
-                    monthContainer = $("<div class='cal-m'></div>");
-                    monthContainer.append(getMonthHeader(months[cMonth]));
-                    //load month to container
-                    calendarContainer.append(monthContainer);
+                counter++;
+                var cDay = 1;
+                if (cMonth < 11) {
+                    cMonth = cMonth + 1;
+                } else {
+                    cMonth = 0;
+                    cYear = cYear + 1;
                 }
-                //render week
+
+            } while (counter <= monthNumber);
+            container.append(calendarContainer);
+        }
+
+        function getMonthElement(year, month, day) {
+
+            var daysInMonth = getDaysInMonth(year, month);
+            var date = new Date(year, month, day);
+            var cDayOfWeek = date.getDay();
+            var isWeekend = false;
+            var monthContainer = $("<div class='cal-m'></div>");
+
+            monthContainer.append(getMonthHeader(months[month], year));
+
+            var d = day
+            var weekContainer = $("<div class='cal-w'></div>");
+            weekContainer.append(getInvalidDaysElements(cDayOfWeek));
+            monthContainer.append(weekContainer);
+            do {
+                cDayOfWeek = date.getDay();
+                isWeekend = (cDayOfWeek == 0 || cDayOfWeek == 6);
+
                 if (!weekContainer || weekContainer.children().length >= 7) {
                     weekContainer = $("<div class='cal-w'></div>");
                     monthContainer.append(weekContainer);
                 }
-
-                var cDay = cDate.getDay();
-                var invalidDays = 0;
-                var isWeekend = (cDay == 0 || cDay == 6);
-
-                if (cDate.getTime() === settings.startDate.getTime()) {
-                    invalidDays = cDay;
-                    weekContainer.append(getInvalidDaysElements(invalidDays));
-                }
-                if (cDate.getTime() === settings.endDate.getTime()) {
-                    invalidDays = Math.abs(cDate.getDay() - 6);
-                    weekContainer.append(getDayElement(cDate.getDate(), isWeekend));
-                    weekContainer.append(getInvalidDaysElements(invalidDays));
-                    break;
-                }
-                weekContainer.append(getDayElement(cDate.getDate(), isWeekend));
-
-                counter++;
-                cDate = addDays(settings.startDate, counter);
-                var tMonth = cDate.getMonth();
-                if (cMonth != tMonth) {
-                    cMonth = tMonth;
-                    isRenderMonth = true;
-                }
-
-            } while (counter < settings.numDays);
-            container.append(calendarContainer);
+                weekContainer.append(getDayElement(d, isWeekend));
+                d++;
+                acum++;
+                date = addDays(date, 1);
+            } while (d <= daysInMonth && acum < settings.numDays);
+            var invalidDays = invalidDays = Math.abs(date.getDay() - 7);
+            if (cDayOfWeek != 6)
+                weekContainer.append(getInvalidDaysElements(invalidDays));
+            return monthContainer;
         }
 
         function getDayElement(date, isWeekend) {
@@ -96,8 +99,8 @@
             return html;
         }
 
-        function getMonthHeader(monthName) {
-            return "<div class='cal-m-header'>" + monthName + "</div>";
+        function getMonthHeader(monthName, year) {
+            return "<div class='cal-m-header'>" + monthName + " " + year + "</div>";
         }
 
 
@@ -107,8 +110,21 @@
             return result;
         }
 
+        function getMonthDiff(startDate, endDate) {
+            var months;
+            months = (endDate.getFullYear() - startDate.getFullYear()) * 12;
+            months -= startDate.getMonth();
+            months += endDate.getMonth();
+            return months <= 0 ? 0 : months;
+        }
+
+        function getDaysInMonth(year, month) {
+            return new Date(year, month + 1, 0).getDate();
+        }
+
         self.each(function() {
             var element = $(this);
+            element.empty();
             render(element);
         });
         return self;
